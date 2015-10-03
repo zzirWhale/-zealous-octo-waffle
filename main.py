@@ -417,14 +417,14 @@ def MessageBotCreator(Response, Subject, Message):
         MainMenu()
     elif Response == "3":
         Confirmation = raw_input("Are you sure you would like to send the message? Y/N\n")
-        if Confirmation == "Y":
+        if Confirmation == "Y" or Confirmation == "y":
             print "You will soon be presented with a link to a Reddit Captcha. Please open this link and input the characters you see into this program. Then press Enter."
             Subject = "BotMsg: " + Subject
             r.send_message("zzirWhale", Subject, Message)
             print "Message sent."
             time.sleep(3)
             MainMenu()
-        elif Confirmation == "N":
+        elif Confirmation == "N" or Confirmation == "n":
             MainMenu()
         else:
             print "Invalid response received."
@@ -878,18 +878,19 @@ Date | Opponent | Time | Comp
 
 def EditSidebar(ReturnToAutoUpdate):
     settings = r.get_settings(sub)
-    try:
-        r.update_settings(r.get_subreddit(sub), description = Sidebar, raise_captcha_exception=True)
-        print "Sidebar should be updated."
-    except praw.errors.APIException:
-        print "PRAW API Exception occured. I bet it's those damn captchas again."
+    captcha = {'iden': '4vnsX74ErzTYPkpQ7o44Hi3XSPvLpiW9', 'captcha': 'KTFLNK'}
+    #try:
+    r.update_settings(r.get_subreddit(sub), description = Sidebar,raise_captcha_exception=True, captcha=captcha)
+    print "Sidebar should be updated."
+    #except praw.errors.APIException:
+    #    print "PRAW API Exception occured. I bet it's those damn captchas again."
         
-        time.sleep(3)
-        MainMenu()
-    except:
-        print "I don't know what happened, but it was something bad. :("
-        time.sleep(3)
-        MainMenu()
+    #    time.sleep(3)
+    #    MainMenu()
+    #except:
+    #    print "I don't know what happened, but it was something bad. :("
+    #    time.sleep(3)
+    #    MainMenu()
     if ReturnToAutoUpdate == True:
         WaitForUpdate()
     else:
