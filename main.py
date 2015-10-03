@@ -761,16 +761,16 @@ Pos | Team | Pld | Gd | Pts
                 for Team in data['standing']:
                     if Team['position'] == 16 or Team['position'] == 17 or Team['position'] == 18 or Team['position'] == 19 or Team['position'] == 20:
                         if Team['teamName'] == "Aston Villa FC":
-                            SBar_LeagueTable = SBar_LeagueTable + "**" + Team['position'] + "**|" + "**" + ShortTeamName(Team['teamName']) + "**|" + "**" + Team['playedGames'] + "**|" + "**" + Team['goalDifference'] + "**|" + "**" + Team['points'] + "\n"
+                            SBar_LeagueTable = SBar_LeagueTable + "**" + str(Team['position']) + "**|" + "**" + ShortTeamName(Team['teamName']) + "**|" + "**" + str(Team['playedGames']) + "**|" + "**" + str(Team['goalDifference']) + "**|" + "**" + str(Team['points']) + "\n"
                         else:
-                            SBar_LeagueTable = SBar_LeagueTable + Team['position'] + "|" + ShortTeamName(Team['teamName']) + "|" + Team['playedGames'] + "|" + Team['goalDifference'] + "|" + Team['points'] + "\n"
+                            SBar_LeagueTable = SBar_LeagueTable + str(Team['position']) + "|" + ShortTeamName(Team['teamName']) + "|" + str(Team['playedGames']) + "|" + str(Team['goalDifference']) + "|" + str(Team['points']) + "\n"
             else:
                for Team in data['standing']:
                     if Team['position'] == VillaLeaguePosition - 2 or Team['position'] == VillaLeaguePosition - 1 or Team['position'] == VillaLeaguePosition or Team['position'] == VillaLeaguePosition + 1 or Team['position'] == VillaLeaguePosition + 2:
                         if Team['teamName'] == "Aston Villa FC":
-                            SBar_LeagueTable = SBar_LeagueTable + "**" + Team['position'] + "**|" + "**" + ShortTeamName(Team['teamName']) + "**|" + "**" + Team['playedGames'] + "**|" + "**" + Team['goalDifference'] + "**|" + "**" + Team['points'] + "\n"
+                            SBar_LeagueTable = SBar_LeagueTable + "**" + str(Team['position']) + "**|" + "**" + ShortTeamName(Team['teamName']) + "**|" + "**" + str(Team['playedGames']) + "**|" + "**" + str(Team['goalDifference']) + "**|" + "**" + str(Team['points']) + "\n"
                         else:
-                            SBar_LeagueTable = SBar_LeagueTable + Team['position'] + "|" + ShortTeamName(Team['teamName']) + "|" + Team['playedGames'] + "|" + Team['goalDifference'] + "|" + Team['points'] + "\n"
+                            SBar_LeagueTable = SBar_LeagueTable + str(Team['position']) + "|" + ShortTeamName(Team['teamName']) + "|" + str(Team['playedGames']) + "|" + str(Team['goalDifference']) + "|" + str(Team['points']) + "\n"
 
     today = datetime.date.today()
 
