@@ -1,5 +1,5 @@
 # -zealous-octo-waffle
-[Python 2.7] Script to Automatically Update /r/avfc sidebar
+[Python 2.7]
 
 "zealous-octo-waffle" is a script written for the purpose of automating the process of updating the sidebar at /r/avfc. 
 
@@ -32,3 +32,4 @@ Version Plan:
    [Potential Update]
        Current Injuries?
        Expansion to other subreddit features - Match threads etc
+       Investigate Python 3 [Potential Rewrite]
