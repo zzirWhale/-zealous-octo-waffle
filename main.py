@@ -218,7 +218,49 @@ Rank|Name|Yellow|Red|Score
 
 def Debug(Input):
   print "[Debug] " + str(Input)
-         
+
+def returnSubreddit(Input):
+  if Input == "Arsenal":
+    return "/r/Gunners"
+  if Input == "Bournemouth":
+    return "/r/AFCBournemouth"
+  if Input == "Chelsea":
+    return "/r/ChelseaFC"
+  if Input == "Crystal Palace":
+    return "/r/CrystalPalace"
+  if Input == "Everton":
+    return "/r/Everton"
+  if Input == "Leicester City":
+    return "/r/LCFC"
+  if Input == "Liverpool":
+    return "/r/LiverpoolFC"
+  if Input == "Manchester City" or Input == "Man City":
+    return "/r/MCFC"
+  if Input == "Manchester United" or Input == "Man Utd":
+    return "/r/reddevils"
+  if Input == "Newcastle":
+    return "/r/NUFC"
+  if Input == "Norwich":
+    return "/r/NorwichCity"
+  if Input == "Southampton":
+    return "/r/SaintsFC"
+  if Input == "Stoke":
+    return "/r/StokeCityFC"
+  if Input == "Sunderland":
+    return "/r/SAFC"
+  if Input == "Swansea":
+    return "/r/SwanseaCity"
+  if Input == "Tottenham":
+    return "/r/coys"
+  if Input == "Watford":
+    return "/r/Watford_FC"
+  if Input == "West Brom":
+    return "/r/WBAfootball"
+  if Input == "West Ham":
+    return "/r/Hammers"
+  else:
+    return "/r/avfc"
+    
 def Get_footballdata_API(APIAddress):
     global data
 
@@ -757,28 +799,29 @@ Pos | Team | Pld | Gd | Pts
 Pos | Team | Pld | Gd | Pts
 :---:|---|:--:|:--:|:--:
 """                                             
+    TeamName = ""
     
     for Team in data['standing']:
-        if Team['teamName'] == "Aston Villa FC":
+      if Team['teamName'] == "Aston Villa FC":
             VillaLeaguePosition = Team['position']
             if VillaLeaguePosition == 19 or VillaLeaguePosition == 20:
                 for Team in data['standing']:
                     if Team['position'] == 16 or Team['position'] == 17 or Team['position'] == 18 or Team['position'] == 19 or Team['position'] == 20:
                         if Team['teamName'] == "Aston Villa FC":
-                            SBar_LeagueTable = SBar_LeagueTable + "**" + str(Team['position']) + "**|" + "**" + ShortTeamName(Team['teamName']) + "**|" + "**" + str(Team['playedGames']) + "**|" + "**" + str(Team['goalDifference']) + "**|" + "**" + str(Team['points']) + "**" + "\n"
+                            SBar_LeagueTable = SBar_LeagueTable + "**" + str(Team['position']) + "**|" + "**" + "[" + ShortTeamName(Team['teamName']) + "](" + returnSubreddit(ShortTeamName(Team['teamName'])) + ")" + "**|" + "**" + str(Team['playedGames']) + "**|" + "**" + str(Team['goalDifference']) + "**|" + "**" + str(Team['points']) + "**" + "\n"
                         else:
-                            SBar_LeagueTable = SBar_LeagueTable + str(Team['position']) + "|" + ShortTeamName(Team['teamName']) + "|" + str(Team['playedGames']) + "|" + str(Team['goalDifference']) + "|" + str(Team['points']) + "\n"
+                            SBar_LeagueTable = SBar_LeagueTable + str(Team['position']) + "|" + "[" + ShortTeamName(Team['teamName']) + "](" + returnSubreddit(ShortTeamName(Team['teamName'])) + ")" + "|" + str(Team['playedGames']) + "|" + str(Team['goalDifference']) + "|" + str(Team['points']) + "\n"
             else:
                for Team in data['standing']:
                     if Team['position'] == VillaLeaguePosition - 2 or Team['position'] == VillaLeaguePosition - 1 or Team['position'] == VillaLeaguePosition or Team['position'] == VillaLeaguePosition + 1 or Team['position'] == VillaLeaguePosition + 2:
                         if Team['teamName'] == "Aston Villa FC":
-                            SBar_LeagueTable = SBar_LeagueTable + "**" + str(Team['position']) + "**|" + "**" + ShortTeamName(Team['teamName']) + "**|" + "**" + str(Team['playedGames']) + "**|" + "**" + str(Team['goalDifference']) + "**|" + "**" + str(Team['points']) + "**" + "\n"
+                            SBar_LeagueTable = SBar_LeagueTable + "**" + str(Team['position']) + "**|" + "**" + "[" + ShortTeamName(Team['teamName']) + "](" + returnSubreddit(ShortTeamName(Team['teamName'])) + ")" + "**|" + "**" + str(Team['playedGames']) + "**|" + "**" + str(Team['goalDifference']) + "**|" + "**" + str(Team['points']) + "**" + "\n"
                         else:
-                            SBar_LeagueTable = SBar_LeagueTable + str(Team['position']) + "|" + ShortTeamName(Team['teamName']) + "|" + str(Team['playedGames']) + "|" + str(Team['goalDifference']) + "|" + str(Team['points']) + "\n"
+                            SBar_LeagueTable = SBar_LeagueTable + str(Team['position']) + "|" + "[" + ShortTeamName(Team['teamName']) + "](" + returnSubreddit(ShortTeamName(Team['teamName'])) + ")" + "|" + str(Team['playedGames']) + "|" + str(Team['goalDifference']) + "|" + str(Team['points']) + "\n"
 
     today = datetime.date.today()
 
-    SBar_LeagueTable = SBar_LeagueTable + "Updated: " + str(today.strftime('%d-%b-%Y')) + "\n\n"
+    SBar_LeagueTable = SBar_LeagueTable + "Updated: " + str(today.strftime('%d-%b-%Y')) + "\n\n  [Full Table](http://www.bbc.com/sport/football/tables)\n"
 
     #--- BBC: Fixtures
           
@@ -802,21 +845,21 @@ Date | Opponent | Result | Comp
         Opponent = ""
         if BBCdata['results']['PreviousMatch'][i]['PM_HomeTeam']['text'] == "Aston Villa":
             AVHomeTeam = True
-            Opponent = str("[" + ShortTeamName(BBCdata['results']['PreviousMatch'][i]['PM_AwayTeam']['text']) + "](" + BBCdata['results']['PreviousMatch'][i]['PM_AwayTeam']['href']) + ") (H)"
+            Opponent = "[" + ShortTeamName(BBCdata['results']['PreviousMatch'][i]['PM_AwayTeam']['text']) + "](" + returnSubreddit(ShortTeamName(BBCdata['results']['PreviousMatch'][i]['PM_AwayTeam']['text'])) + ") (H)"
         else:
             AVHomeTeam = False
-            Opponent = str("[" + ShortTeamName(BBCdata['results']['PreviousMatch'][i]['PM_HomeTeam']['text']) + "](" + BBCdata['results']['PreviousMatch'][i]['PM_HomeTeam']['href']) + ") (A)"
+            Opponent = "[" + ShortTeamName(BBCdata['results']['PreviousMatch'][i]['PM_HomeTeam']['text']) + "](" + returnSubreddit(ShortTeamName(BBCdata['results']['PreviousMatch'][i]['PM_HomeTeam']['text'])) + ") (A)"
 
         Debug(int(BBCdata['results']['PreviousMatch'][i]['PM_Score']['text'][0]))
         Debug(int(BBCdata['results']['PreviousMatch'][i]['PM_Score']['text'][4]))
         Debug(AVHomeTeam)
 
         if int(BBCdata['results']['PreviousMatch'][i]['PM_Score']['text'][0]) > int(BBCdata['results']['PreviousMatch'][i]['PM_Score']['text'][4]) and AVHomeTeam == True:
-            Result = BBCdata['results']['PreviousMatch'][i]['PM_Score']['text'] + " (W)"
+            Result = "[" + BBCdata['results']['PreviousMatch'][i]['PM_Score']['text'] + " (W)" + "](" + BBCdata['results']['PreviousMatch'][i]['PM_Score']['href'] + ")"
         elif BBCdata['results']['PreviousMatch'][i]['PM_Score']['text'][0] == BBCdata['results']['PreviousMatch'][i]['PM_Score']['text'][4]:
-            Result = BBCdata['results']['PreviousMatch'][i]['PM_Score']['text'] + " (D)"
+            Result = "[" + BBCdata['results']['PreviousMatch'][i]['PM_Score']['text'] + " (D)" + "](" + BBCdata['results']['PreviousMatch'][i]['PM_Score']['href'] + ")"
         else:
-            Result = BBCdata['results']['PreviousMatch'][i]['PM_Score']['text'] + " (L)"
+            Result = "[" + BBCdata['results']['PreviousMatch'][i]['PM_Score']['text'] + " (L)" + "](" + BBCdata['results']['PreviousMatch'][i]['PM_Score']['href'] + ")"
 
         Comp = str(ShortCompName(BBCdata['results']['PreviousMatch'][i]['PM_Comp']))
 
@@ -835,10 +878,10 @@ Date | Opponent | Time | Comp
         Opponent = ""
         if BBCdata['results']['FutureMatch'][i]['FM_HomeTeam']['text'] == "Aston Villa":
             AVHomeTeam = True
-            Opponent = str(ShortTeamName(BBCdata['results']['FutureMatch'][i]['FM_AwayTeam']['text'])) + " (H)"
+            Opponent = "[" + ShortTeamName(BBCdata['results']['FutureMatch'][i]['FM_AwayTeam']['text']) + "](" + returnSubreddit(ShortTeamName(BBCdata['results']['FutureMatch'][i]['FM_AwayTeam']['text'])) + ") (H)"
         else:
             AVHomeTeam = False
-            Opponent = str(ShortTeamName(BBCdata['results']['FutureMatch'][i]['FM_HomeTeam']['text'])) + " (A)"
+            Opponent = "[" + ShortTeamName(BBCdata['results']['FutureMatch'][i]['FM_HomeTeam']['text']) + "](" + returnSubreddit(ShortTeamName(BBCdata['results']['FutureMatch'][i]['FM_HomeTeam']['text'])) + ") (A)"
 
         Time = BBCdata['results']['FutureMatch'][i]['FM_Time']
 
@@ -886,11 +929,8 @@ Date | Opponent | Time | Comp
     EditSidebar(ReturnToAutoUpdate)
 
 def EditSidebar(ReturnToAutoUpdate):
-    global captcha
-    settings = r.get_settings(sub)
-    
     try:
-        r.update_settings(r.get_subreddit(sub), description = Sidebar, raise_captcha_exception = True)
+       r.update_settings(r.get_subreddit(sub), description = Sidebar, raise_captcha_exception = True)
     except praw.errors.APIException:
         print "PRAW API Exception occured. I bet it's those damn captchas again. [Sidebar should have been updated, false error.]"
         
