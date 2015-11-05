@@ -598,6 +598,76 @@ def returnShortName(Name):
     else:
         return Name
 
+def returnPlayerLink(Name):
+    if Name == "Bradley Guzan" or Name == "Brad Guzan" or Name == "Guzan":
+        return "[Guzan](http://www.avfc.co.uk/page/PlayerProfiles/0,,10265~39771,00.html)"
+    elif Name == "Leandro Bacuna" or Name == "Bacuna":
+        return "[Bacuna](http://www.avfc.co.uk/page/PlayerProfiles/0,,10265~65198,00.html)"
+    elif Name == "Kieran Richardson" or Name == "Richardson":
+        return "[Richardson](http://www.avfc.co.uk/page/PlayerProfiles/0,,10265~22897,00.html)"
+    elif Name == "Ron Vlaar":
+        return "Vlaar"
+    elif Name == "Philippe Senderos" or Name == "Senderos":
+        return "[Senderos](http://www.avfc.co.uk/page/PlayerProfiles/0,,10265~30571,00.html)"
+    elif Name == "Aly Cissokho" or Name == "Cissokho":
+        return "Cissokho"
+    elif Name == "Alan Hutton" or Name == "Hutton":
+        return "[Hutton](http://www.avfc.co.uk/page/PlayerProfiles/0,,10265~18639,00.html)"
+    elif Name == "Ciaran Clark" or Name == "Clark":
+        return "[Clark](http://www.avfc.co.uk/page/PlayerProfiles/0,,10265~46006,00.html)"
+    elif Name == "Jores Okore" or Name == "Okore":
+        return "[Okore](http://www.avfc.co.uk/page/PlayerProfiles/0,,10265~57299,00.html)"
+    elif Name == "Nathan Baker" or Name == "Baker":
+        return "Baker"
+    elif Name == "Lewis Kinsella" or Name == "Kinsella":
+        return "[Kinsella](http://www.avfc.co.uk/page/PlayerProfiles/0,,10265~72844,00.html)"
+    elif Name == "Micah Richards" or Name == "Richards":
+        return "[Richards](http://www.avfc.co.uk/page/PlayerProfiles/0,,10265~33806,00.html)"
+    elif Name == "Carles Gil de Pareja Vicent" or Name == "Carles Gil":
+        return "[Carles Gil](http://www.avfc.co.uk/page/PlayerProfiles/0,,10265~70519,00.html)"
+    elif Name == "Charles N'Zogbia" or Name == "N'Zogbia":
+        return "[N'Zogbia](http://www.avfc.co.uk/page/PlayerProfiles/0,,10265~31129,00.html)"
+    elif Name == "Joe Cole" or Name == "Cole":
+        return "[Cole](http://www.avfc.co.uk/page/PlayerProfiles/0,,10265~6078,00.html)"
+    elif Name == "Jack Grealish" or Name == "Grealish":
+        return "[Grealish](http://www.avfc.co.uk/page/PlayerProfiles/0,,10265~60281,00.html)"
+    elif Name == "Scott Sinclair" or Name == "Sinclair":
+        return "[Sinclair](http://www.avfc.co.uk/page/PlayerProfiles/0,,10265~32529,00.html)"
+    elif Name == "Ashley Westwood" or Name == "Westwood":
+        return "[Westwood](http://www.avfc.co.uk/page/PlayerProfiles/0,,10265~44757,00.html)"
+    elif Name == "Carlos Sánchez" or Name == "Carlos Sanchez" or Name == "Sánchez":
+        return "[Sánchez](http://www.avfc.co.uk/page/PlayerProfiles/0,,10265~41588,00.html)"
+    elif Name == "Gabriel Agbonlahor" or Name == "Agbonlahor":
+        return "[Agbonlahor](http://www.avfc.co.uk/page/PlayerProfiles/0,,10265~35272,00.html)"
+    elif Name == "Libor Kozak" or Name == "Libor Kozák" or Name == "Kozák":
+        return "[Kozák](http://www.avfc.co.uk/page/PlayerProfiles/0,,10265~47074,00.html)"
+    elif Name == "Rushian Hepburn-Murphy" or Name == "Hepburn-Murphy":
+        return "[Hepburn-Murphy](http://www.avfc.co.uk/page/NewsDetail/0,,10265~4060366,00.html)"
+    elif Name == "Tiago Ilori" or Name == "Ilori":
+        return "[Ilori](http://www.avfc.co.uk/page/PlayerProfiles/0,,10265~58512,00.html)"
+    elif Name == "Joleon Lescott" or Name == "Lescott":
+        return "[Lescott](http://www.avfc.co.uk/page/PlayerProfiles/0,,10265~8346,00.html)"
+    elif Name == "Mark Bunn" or Name == "Bunn":
+        return "[Bunn](http://www.avfc.co.uk/page/PlayerProfiles/0,,10265~18732,00.html)"
+    elif Name == "Idrissa Gueye" or Name == "Gueye":
+        return "[Gueye](http://www.avfc.co.uk/page/PlayerProfiles/0,,10265~50617,00.html)"
+    elif Name == "Jordan Amavi" or Name == "Amavi":
+        return "[Amavi](http://www.avfc.co.uk/page/PlayerProfiles/0,,10265~66775,00.html)"
+    elif Name == "José Ángel Crespo" or Name == "José Crespo" or Name == "Crespo":
+        return "[Crespo](http://www.avfc.co.uk/page/PlayerProfiles/0,,10265~36050,00.html)"
+    elif Name == "Jordan Ayew]()" or Name == "Ayew":
+        return "[Ayew](http://www.avfc.co.uk/page/PlayerProfiles/0,,10265~44239,00.html)"
+    elif Name == "Jordan Veretout" or Name == "Veretout":
+        return "[Veretout](http://www.avfc.co.uk/page/PlayerProfiles/0,,10265~65191,00.html)"
+    elif Name == "Rudy Gestede" or Name == "Gestede":
+        return "[Gestede](http://www.avfc.co.uk/page/PlayerProfiles/0,,10265~42430,00.html)"
+    elif Name == "Adama Traoré" or Name == "Adama Traore" or Name == "Traoré":
+        return "[Traoré](http://www.avfc.co.uk/page/PlayerProfiles/0,,10265~68547,00.html)"
+    elif Name == "Gary Gardner" or Name == "Gardner":
+        return "[Gardner](http://www.avfc.co.uk/page/PlayerProfiles/0,,10265~56257,00.html)"
+    else:
+        return Name
+
 def UpdateSidebar(ReturnToAutoUpdate):
 
     #---
@@ -772,7 +842,7 @@ def UpdateSidebar(ReturnToAutoUpdate):
 
         PlayName = returnShortName(Player)
                     
-        Sbar_BPL_SA = Sbar_BPL_SA + PlayName + "|" + str(PlayerGoals) + "|" + str(PlayerAssists) + "|" + str(PlayerScore) + "\n"
+        Sbar_BPL_SA = Sbar_BPL_SA + str(returnPlayerLink(PlayName)) + "|" + str(PlayerGoals) + "|" + str(PlayerAssists) + "|" + str(PlayerScore) + "\n"
 
     for i in range(0,7):
         Player = str(TopDiscipline[int(i)][1])        
@@ -782,7 +852,7 @@ def UpdateSidebar(ReturnToAutoUpdate):
 
         PlayName = returnShortName(Player)
         
-        Sbar_Discipline = Sbar_Discipline + PlayName + "|" + str(PlayerYellow) + "|" + str(PlayerRed) + "|" + str(PlayerDisciplineScore) + "\n"
+        Sbar_Discipline = Sbar_Discipline + str(returnPlayerLink(PlayName)) + "|" + str(PlayerYellow) + "|" + str(PlayerRed) + "|" + str(PlayerDisciplineScore) + "\n"
 
     #--- football-data.org: League Table
     Get_footballdata_API(JSON_leagueTable)
