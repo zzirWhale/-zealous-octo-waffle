@@ -53,6 +53,7 @@ import tkMessageBox
 import time
 import webbrowser
 import cPickle as pickle
+import threading
 
 from Tkinter import Tk
 
@@ -76,6 +77,7 @@ global redirect_uri
 global refresh_token
 global data
 global PLdata
+global captcha
 
 global SBar_Links
 global Sbar_Upcoming
@@ -96,6 +98,7 @@ VillaLeaguePosition = 0
 SBar_LeagueTable = ""
 
 PRAWFlags = "flair identity modconfig modposts modwiki privatemessages read save submit vote wikiedit wikiread"
+captcha = {'iden': 'f7UdxDmAEMbyLrb5fRALWJWvI5RPgGve', 'captcha': 'FYEMHB'}
 
 ProgramHeader = """#---
 #   /r/avfc Sidebar Update Bot, v2.0
@@ -212,7 +215,10 @@ Rank|Name|Yellow|Red|Score
 #-------------------------------------------------------------------------------------------------------------- End of Variables
 
 #-------------------------------------------------------------------------------------------------------------- Start of Functions
-             
+
+def Debug(Input):
+  print "[Debug] " + str(Input)
+         
 def Get_footballdata_API(APIAddress):
     global data
 
@@ -345,7 +351,7 @@ def MainMenu():
 
     print "Current Connected to: /r/" + str(sub)
     print "\nMain Menu:\n"
-    print "1. Manually Update Sidebar. [Future Update Feature --- Do not use ===]"
+    print "1. Manually Update Sidebar."
     print "2. Start Automatically Updating Sidebar."
     print "3. Force generate new sidebar."
     for i in range(4,6):
@@ -361,7 +367,7 @@ def MainMenu():
     elif MenuSelection == "2":
         WaitForUpdate()
     elif MenuSelection == "3":
-        UpdateSidebar(True)
+        UpdateSidebar(False)
     elif MenuSelection == "6":
         ShowVersionHistory()
     elif MenuSelection == "7":
@@ -375,17 +381,15 @@ def MainMenu():
         MainMenu()
 
 def WaitForUpdate():
-    print "To stop the bot waiting for an update command, you will have to close the entire program."
-    while True:
-        for msg in r.get_unread(limit=None):
-            if msg.subject == "Update" or msg.subject == "update":
-                print "Update command received. Updating sidebar now."
-                msg.mark_as_read()
-                UpdateSidebar(True)
-            else:
-                pass
-        print "No update command received. Sleeping for 2 hours, and then re-checking."
-        time.sleep(7200)
+    ClearScreen()
+    print "----------- Automatically Updating -----------"
+    Timer = threading.Timer(60, UpdateSidebar(True))
+    Respond = raw_input("Please press 1 to cancel automatic updates and return to the main menu: ")
+    if Respond == "1":
+        Timer.cancel
+        MainMenu()
+    else:
+        WaitForUpdate()
         
 def MessageMenu(Subject, Message):
     ClearScreen()
@@ -420,7 +424,7 @@ def MessageBotCreator(Response, Subject, Message):
         if Confirmation == "Y" or Confirmation == "y":
             print "You will soon be presented with a link to a Reddit Captcha. Please open this link and input the characters you see into this program. Then press Enter."
             Subject = "BotMsg: " + Subject
-            r.send_message("zzirWhale", Subject, Message)
+            r.send_message("zzirWhale", Subject, Message, captcha=captcha)
             print "Message sent."
             time.sleep(3)
             MainMenu()
@@ -637,12 +641,12 @@ def UpdateSidebar(ReturnToAutoUpdate):
     print "\nPremier League Data complete. Beginning Capital One Cup\n"
 
     for i in range(0,50):
-        print "[COC Scorers] Working with data for: " + COC_Score_Data['results']['collection1'][i]['playerName']['text'] + " [" + str(i + 1) + "/50]" 
-        if COC_Score_Data['results']['collection1'][i]['clubName']['text'] == "Aston Villa":
+        print "[COC Scorers] Working with data for: " + COC_Score_Data['results']['collection1'][i]['playerName'] + " [" + str(i + 1) + "/50]" 
+        if COC_Score_Data['results']['collection1'][i]['clubName'] == "Aston Villa":
             for x in PlayerName:
                 if Count1 < 34:
                     CurName = PlayerName[Count1]
-                    if COC_Score_Data['results']['collection1'][i]['playerName']['text'] == CurName:
+                    if COC_Score_Data['results']['collection1'][i]['playerName'] == CurName:
                         totalGoals = str(COC_Score_Data['results']['collection1'][i]['totalGoals'])
                         currentGoals = Player_Goals[Count1]
                         completeGoals = int(currentGoals) + int(totalGoals)
@@ -667,12 +671,12 @@ def UpdateSidebar(ReturnToAutoUpdate):
     completeAssists = 0
 
     for i in range(0,50):
-        print "[COC Assists] Working with data for: " + COC_Assist_Data['results']['collection1'][i]['playerName']['text'] + " [" + str(i + 1) + "/50]" 
-        if COC_Assist_Data['results']['collection1'][i]['clubName']['text'] == "Aston Villa":
+        print "[COC Assists] Working with data for: " + COC_Assist_Data['results']['collection1'][i]['playerName'] + " [" + str(i + 1) + "/50]" 
+        if COC_Assist_Data['results']['collection1'][i]['clubName'] == "Aston Villa":
             for x in PlayerName:
                 if Count1 < 34:
                     CurName = PlayerName[Count1]
-                    if COC_Assist_Data['results']['collection1'][i]['playerName']['text'] == CurName:
+                    if COC_Assist_Data['results']['collection1'][i]['playerName'] == CurName:
                         totalAssists = str(COC_Assist_Data['results']['collection1'][i]['totalAssists'])
                         currentAssists = Player_Assists[Count1]
                         completeAssists = int(currentAssists) + int(totalAssists)
@@ -761,14 +765,14 @@ Pos | Team | Pld | Gd | Pts
                 for Team in data['standing']:
                     if Team['position'] == 16 or Team['position'] == 17 or Team['position'] == 18 or Team['position'] == 19 or Team['position'] == 20:
                         if Team['teamName'] == "Aston Villa FC":
-                            SBar_LeagueTable = SBar_LeagueTable + "**" + str(Team['position']) + "**|" + "**" + ShortTeamName(Team['teamName']) + "**|" + "**" + str(Team['playedGames']) + "**|" + "**" + str(Team['goalDifference']) + "**|" + "**" + str(Team['points']) + "\n"
+                            SBar_LeagueTable = SBar_LeagueTable + "**" + str(Team['position']) + "**|" + "**" + ShortTeamName(Team['teamName']) + "**|" + "**" + str(Team['playedGames']) + "**|" + "**" + str(Team['goalDifference']) + "**|" + "**" + str(Team['points']) + "**" + "\n"
                         else:
                             SBar_LeagueTable = SBar_LeagueTable + str(Team['position']) + "|" + ShortTeamName(Team['teamName']) + "|" + str(Team['playedGames']) + "|" + str(Team['goalDifference']) + "|" + str(Team['points']) + "\n"
             else:
                for Team in data['standing']:
                     if Team['position'] == VillaLeaguePosition - 2 or Team['position'] == VillaLeaguePosition - 1 or Team['position'] == VillaLeaguePosition or Team['position'] == VillaLeaguePosition + 1 or Team['position'] == VillaLeaguePosition + 2:
                         if Team['teamName'] == "Aston Villa FC":
-                            SBar_LeagueTable = SBar_LeagueTable + "**" + str(Team['position']) + "**|" + "**" + ShortTeamName(Team['teamName']) + "**|" + "**" + str(Team['playedGames']) + "**|" + "**" + str(Team['goalDifference']) + "**|" + "**" + str(Team['points']) + "\n"
+                            SBar_LeagueTable = SBar_LeagueTable + "**" + str(Team['position']) + "**|" + "**" + ShortTeamName(Team['teamName']) + "**|" + "**" + str(Team['playedGames']) + "**|" + "**" + str(Team['goalDifference']) + "**|" + "**" + str(Team['points']) + "**" + "\n"
                         else:
                             SBar_LeagueTable = SBar_LeagueTable + str(Team['position']) + "|" + ShortTeamName(Team['teamName']) + "|" + str(Team['playedGames']) + "|" + str(Team['goalDifference']) + "|" + str(Team['points']) + "\n"
 
@@ -798,12 +802,16 @@ Date | Opponent | Result | Comp
         Opponent = ""
         if BBCdata['results']['PreviousMatch'][i]['PM_HomeTeam']['text'] == "Aston Villa":
             AVHomeTeam = True
-            Opponent = ShortTeamName(BBCdata['results']['PreviousMatch'][i]['PM_AwayTeam']['text']) + " (H)"
+            Opponent = str("[" + ShortTeamName(BBCdata['results']['PreviousMatch'][i]['PM_AwayTeam']['text']) + "](" + BBCdata['results']['PreviousMatch'][i]['PM_AwayTeam']['href']) + ") (H)"
         else:
             AVHomeTeam = False
-            Opponent = ShortTeamName(BBCdata['results']['PreviousMatch'][i]['PM_HomeTeam']['text']) + " (A)"
+            Opponent = str("[" + ShortTeamName(BBCdata['results']['PreviousMatch'][i]['PM_HomeTeam']['text']) + "](" + BBCdata['results']['PreviousMatch'][i]['PM_HomeTeam']['href']) + ") (A)"
 
-        if BBCdata['results']['PreviousMatch'][i]['PM_Score']['text'][0] > BBCdata['results']['PreviousMatch'][i]['PM_Score']['text'][4] and AVHomeTeam == True:
+        Debug(int(BBCdata['results']['PreviousMatch'][i]['PM_Score']['text'][0]))
+        Debug(int(BBCdata['results']['PreviousMatch'][i]['PM_Score']['text'][4]))
+        Debug(AVHomeTeam)
+
+        if int(BBCdata['results']['PreviousMatch'][i]['PM_Score']['text'][0]) > int(BBCdata['results']['PreviousMatch'][i]['PM_Score']['text'][4]) and AVHomeTeam == True:
             Result = BBCdata['results']['PreviousMatch'][i]['PM_Score']['text'] + " (W)"
         elif BBCdata['results']['PreviousMatch'][i]['PM_Score']['text'][0] == BBCdata['results']['PreviousMatch'][i]['PM_Score']['text'][4]:
             Result = BBCdata['results']['PreviousMatch'][i]['PM_Score']['text'] + " (D)"
@@ -827,10 +835,10 @@ Date | Opponent | Time | Comp
         Opponent = ""
         if BBCdata['results']['FutureMatch'][i]['FM_HomeTeam']['text'] == "Aston Villa":
             AVHomeTeam = True
-            Opponent = ShortTeamName(BBCdata['results']['FutureMatch'][i]['FM_AwayTeam']['text']) + " (H)"
+            Opponent = str(ShortTeamName(BBCdata['results']['FutureMatch'][i]['FM_AwayTeam']['text'])) + " (H)"
         else:
             AVHomeTeam = False
-            Opponent = ShortTeamName(BBCdata['results']['FutureMatch'][i]['FM_HomeTeam']['text']) + " (A)"
+            Opponent = str(ShortTeamName(BBCdata['results']['FutureMatch'][i]['FM_HomeTeam']['text'])) + " (A)"
 
         Time = BBCdata['results']['FutureMatch'][i]['FM_Time']
 
@@ -853,7 +861,8 @@ Date | Opponent | Time | Comp
     #Table Seperator
     tS = "|" 
     for i in range(0,5):
-        Sbar_FPL = Sbar_FPL + str(FPLdata['results']['Fantasy Premier League'][i]['teamRank']) + tS + FPLdata['results']['Fantasy Premier League'][i]['teamName']['text'] + tS + str(FPLdata['results']['Fantasy Premier League'][i]['gameweekTotal']) + tS + str(FPLdata['results']['Fantasy Premier League'][i]['totalScore']) + "\n"
+        FPL_Team = "[" + FPLdata['results']['Fantasy Premier League'][i]['teamName']['text'] + "](" + str(FPLdata['results']['Fantasy Premier League'][i]['teamName']['href']) + ")"
+        Sbar_FPL = Sbar_FPL + str(FPLdata['results']['Fantasy Premier League'][i]['teamRank']) + tS + FPL_Team + tS + str(FPLdata['results']['Fantasy Premier League'][i]['gameweekTotal']) + tS + str(FPLdata['results']['Fantasy Premier League'][i]['totalScore']) + "\n"
 
     Sbar_FPL + Sbar_FPL + " | | | |"
     
@@ -877,20 +886,17 @@ Date | Opponent | Time | Comp
     EditSidebar(ReturnToAutoUpdate)
 
 def EditSidebar(ReturnToAutoUpdate):
+    global captcha
     settings = r.get_settings(sub)
-    captcha = {'iden': '4vnsX74ErzTYPkpQ7o44Hi3XSPvLpiW9', 'captcha': 'KTFLNK'}
-    #try:
-    r.update_settings(r.get_subreddit(sub), description = Sidebar,raise_captcha_exception=True, captcha=captcha)
-    print "Sidebar should be updated."
-    #except praw.errors.APIException:
-    #    print "PRAW API Exception occured. I bet it's those damn captchas again."
+    
+    try:
+        r.update_settings(r.get_subreddit(sub), description = Sidebar, raise_captcha_exception = True)
+    except praw.errors.APIException:
+        print "PRAW API Exception occured. I bet it's those damn captchas again. [Sidebar should have been updated, false error.]"
         
-    #    time.sleep(3)
-    #    MainMenu()
-    #except:
-    #    print "I don't know what happened, but it was something bad. :("
-    #    time.sleep(3)
-    #    MainMenu()
+        time.sleep(3)
+        MainMenu()
+    
     if ReturnToAutoUpdate == True:
         WaitForUpdate()
     else:
